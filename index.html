@@ -7,18 +7,15 @@
 
     </head>
     <body>
-
-
-        <input type="file" id="file-input" />
-        <h3>Contents of the file:</h3>
+        
+        <h2>Contents of the file:</h2></br>
         <pre id="file-content"></pre>
-        <button id="Bobs" onclick="DONTSHOWBOBS()">SHOW BOBS AND VAGENE</button>
-        <textarea id="result"></textarea>
+        <button onclick="post_raw_data()">Post Song's Chords</button>
 
     </body>
     <script>
-
-        function DONTSHOWBOBS()
+        
+        function post_raw_data()
         {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function()
@@ -26,15 +23,13 @@
                 if (this.readyState == 4 && this.status == 200)
                 {
                    // Typical action to be performed when the document is ready:
-                   document.getElementById("result").value = xhttp.responseText;
+                   document.getElementById("file-content").value = xhttp.responseText;
                 }
             };
             xhttp.open("GET", "https://raw.githubusercontent.com/hsaygan/Android-Design-Smell-Analyzation/master/README.md?token=AZc5PUKsiPn3P_pe6G6sWrhBXmvnXCehks5a2jR4wA%3D%3D", true);
             xhttp.send();
         }
-
-        Bobs.onClick
-
+        
     </script>
 
 </html>
