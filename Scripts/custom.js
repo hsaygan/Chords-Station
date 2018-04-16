@@ -1,3 +1,5 @@
+var dictionary_link = "https://raw.githubusercontent.com/hsaygan/Chords-Station/master/database.json";
+
 function get_song_link_from_dictionary(song_name, artist_name)
 {
     //Get Dictionary of all the Songs
@@ -6,7 +8,7 @@ function get_song_link_from_dictionary(song_name, artist_name)
     {
         if (this.readyState == 4 && this.status == 200){}
     };
-    xhttp.open("GET", "database.json", true);
+    xhttp.open("GET", dictionary_link, true);
     xhttp.send();
 
     //Return File Link
@@ -43,8 +45,6 @@ function run_this_random(song_name, artist)
     document.getElementById("youtube_video").src = file_manifest.youtube_link;
     var timer = new Timer();
     timer.start();
-
-
 
     timer.addEventListener('secondsUpdated', function (e) {
         document.getElementById("timer").innerHTML = timer.getTimeValues().toString();
