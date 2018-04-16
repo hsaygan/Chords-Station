@@ -4,32 +4,13 @@
         <meta charset="utf-8">
         <title>Chords Convertor</title>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-
     </head>
     <body>
         <h2>Youtube Video:</h2></br>
         <iframe width="560" height="315" src="https://www.youtube.com/embed/U77d9912lrw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
         <h2>Contents of the file:</h2></br>
         <button onclick="post_raw_data()">Post Song's Chords</button></br>
-        <textarea id="file-content"></textarea>
-
+        <textarea id="file-content" rows="4" cols="50"></textarea>
     </body>
-    <script>
-        
-        function post_raw_data()
-        {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function()
-            {
-                if (this.readyState == 4 && this.status == 200)
-                {
-                   // Typical action to be performed when the document is ready:
-                   document.getElementById("file-content").value = xhttp.responseText;
-                }
-            };
-            xhttp.open("GET", "https://raw.githubusercontent.com/hsaygan/Chords-Station/master/Chords/Local%20Train/Aaftaab.chords", true);
-            xhttp.send();
-        }
-        
-    </script>
+    <script src="custom.js"></script>
 </html>
