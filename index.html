@@ -3,14 +3,17 @@
     <head>
         <meta charset="utf-8">
         <title>Chords Convertor</title>
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+        <!--script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script-->
+        <script type="text/javascript" src="Scripts/easytimer.min.js"></script>
     </head>
     <body>
-        <h2>Youtube Video:</h2></br>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/U77d9912lrw" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        <h2>Contents of the file:</h2></br>
-        <button onclick="post_raw_data()">Post Song's Chords</button></br>
-        <textarea id="file-content" rows="4" cols="50"></textarea>
+        <center>
+            <h2>Chords Station</h2>
+            <iframe id="youtube_video" width="560" height="315" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+		    <h2 id="timer" style="font-size: 5vw">Time!</h2>
+            <h2 id="display_chord" style="font-size: 7vw"></h2>
+        </center>
     </body>
-    <script src="custom.js"></script>
+    <script type="text/javascript" src="Scripts/custom.js"></script>
 </html>
