@@ -1,4 +1,4 @@
-var dictionary_link = "https://raw.githubusercontent.com/hsaygan/Chords-Station/master/database.json";
+var database_link = "https://hsaygan.github.io/Chords-Station/database.json";
 
 function get_song_link_from_dictionary(song_name, artist_name)
 {
@@ -6,20 +6,24 @@ function get_song_link_from_dictionary(song_name, artist_name)
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function()
     {
-        if (this.readyState == 4 && this.status == 200){}
+        if (this.readyState == 4 && this.status == 200) {console.log(xhttp.responseText)}
     };
-    xhttp.open("GET", dictionary_link, true);
+    xhttp.open("GET", database_link, true);
     xhttp.send();
+    let database = xhttp.responseText;
 
     //Return File Link
-    let database = xhttp.responseText;
+    console.log("\nGot the Database!");
+    console.log(JSON.stringify(database));
     for (var file_manifest in database)
     {
+
         console.log("\nSong: " + file_manifest.song + " by " + file_manifest.artist);
         if (artist_name = file_manifest.artist)
         {
             if (song_name == file_manifest.song)
             {
+                console.log(file_manifest);
                 return file_manifest;
             }
         }
@@ -39,25 +43,37 @@ function run_this_random(song_name, artist)
     };
     xhttp.open("GET", file_manifest.link, true);
     xhttp.send();
+    let file_object = xhttp.responseText;
 
     //Initializations
-    let file_object = xhttp.responseText;
     document.getElementById("youtube_video").src = file_manifest.youtube_link;
     var timer = new Timer();
     timer.start();
 
+    //Display Timer
     timer.addEventListener('secondsUpdated', function (e) {
         document.getElementById("timer").innerHTML = timer.getTimeValues().toString();
     });
-    //Separate Chords and Time
-    /*x = file_object.read_next_line();
-    time_for_next_chord = x.get_time();
-    chord = x.get_chord();
-    while (1)
+
+    /*//Testing
+    var all_lines = file_object.split("\n");
+    for (var current_line in all_lines)
     {
-        if (current_time = time_for_next_chord)
+        current_line = current_line.toString().split(":");
+        var hours = parseInt(current_line[0]);
+        var minutes = parseInt(current_line[1]);
+        var seconds = parseInt(current_line[2]);
+        var chord = current_line[3];
+
+        if (hours == timer.getTimeValues().hours)
         {
-            document.getElementById("display_chord").innerHTML = chord;
+            if (hours == timer.getTimeValues().minutes)
+            {
+                if (hours == timer.getTimeValues().seconds)
+                {
+                    document.getElementById("display_chord").innerHTML = chord;
+                }
+            }
         }
     }*/
 }
