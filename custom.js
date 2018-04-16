@@ -1,10 +1,8 @@
-function post_raw_data()
-{
-
-}
+//Dictionary: https://raw.githubusercontent.com/hsaygan/Chords-Station/master/dictionary.json
 
 function get_song_file(song_name, artist)
 {
+    //Get Dictionary of all the Songs
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function()
     {
@@ -13,8 +11,13 @@ function get_song_file(song_name, artist)
            document.getElementById("file-content").value = xhttp.responseText;
         }
     };
-    xhttp.open("GET", "https://raw.githubusercontent.com/hsaygan/Chords-Station/master/Chords/Local%20Train/Aaftaab.chords", true);
+    xhttp.open("GET", "https://raw.githubusercontent.com/hsaygan/Chords-Station/master/dictionary.json", true);
     xhttp.send();
+
+    let dictionary = xhttp.responseText;
+    dictionary.forEach(function(song){
+        console.log(song.name);
+    })
 }
 
 function run_this_random(song_name, artist)
@@ -27,7 +30,7 @@ function run_this_random(song_name, artist)
     {
         if (current_time = time_for_next_chord)
         {
-            textare.value = chord;
+            textarea.value = chord;
         }
     }
 }
