@@ -8,40 +8,39 @@ function run_this_random(song_name, artist_name)
         if (this.readyState == 4 && this.status == 200)
         {
             var database = JSON.parse(xhttp.responseText);
+            var song_found = false;
             console.log("\n=========== LEVEL 1\n Database = ", database);
-            for (var file_manifest in database)
+            for (var i = 0; i <= database[artist_name].length; i++)
             {
-                console.log("\n", file_manifest, "\nSong: " + database.file_manifest[0].song + " by " + database.file_manifest[0].artist);
-                if (artist_name == file_manifest)
+                console.log("\nSong: " + database[artist_name][i].song + " by " + artist_name);
+                if (database[artist_name][i].song == song_name)
                 {
-                    console.log("\nCHAL GYA!!!")
-                    if (song_name == database.file_manifest.song)
+                    song_found = true;
+                    console.log("\n\tChosen Song: " + database[artist_name][i].song + "\n\tLink: " + database[artist_name][i].file_link);
+                    var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function()
                     {
-                        console.log(file_manifest);
-                        var xhr = new XMLHttpRequest();
-                        xhttp.onreadystatechange = function()
+                        if (this.readyState == 4 && this.status == 200)
                         {
-                            if (this.readyState == 4 && this.status == 200)
-                            {
-                                var file_object = xhr.responseText;
-                                console.log("\=========== LEVEL 2\n File Object: ", file_object);
+                            console.log("\nOnto Initializations Now!")
+                            //Initializations
+                            document.getElementById("youtube_video").src = database[artist_name][i].youtube_link;
+                            var timer = new Timer();
+                            timer.start();
 
-
-                                //Initializations
-                                document.getElementById("youtube_video").src = file_manifest.youtube_link;
-                                var timer = new Timer();
-                                timer.start();
-
-                                //Display Timer
-                                timer.addEventListener('secondsUpdated', function (e) {
-                                    document.getElementById("timer").innerHTML = timer.getTimeValues().toString();
-                                });
-                            }
-                        };
-                        xhttp.open("GET", file_manifest.link, true);
-                        xhttp.send();
-                    }
+                            //Display Timer
+                            timer.addEventListener('secondsUpdated', function (e) {
+                                document.getElementById("timer").innerHTML = timer.getTimeValues().toString();
+                            });
+                        }
+                    };
+                    xhr.open("GET", database[artist_name][i].file_link, true);
+                    xhr.send();
                 }
+            }
+            if (song_found == false)
+            {
+                document.getElementById("display_chord").innerHTML = "Song not Found!";
             }
         }
     };

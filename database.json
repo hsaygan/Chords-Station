@@ -3,26 +3,22 @@
     [
         {
             "song": "Aftaab",
-            "artist": "Local Train",
-            "file_link": "https://hsaygan.github.io/Chords-Station/Chords/Local_Train/Aaftaab.chords",
+            "chords_link": "https://hsaygan.github.io/Chords-Station/Chords/Local_Train/Aaftaab.chords",
             "youtube_link": "https://www.youtube.com/embed/U77d9912lrw"
         },
         {
             "song": "Dil Mere",
-            "artist": "Local Train",
-            "link": "https://hsaygan.github.io/Chords-Station/Chords/Local_Train/Dil_Mere.chords",
+            "chords_link": "https://hsaygan.github.io/Chords-Station/Chords/Local_Train/Dil_Mere.chords",
             "youtube_link": "https://www.youtube.com/embed/qLCLvzTGFVM"
         },
         {
             "song": "Dilnawaaz",
-            "artist": "Local Train",
-            "link": "https://hsaygan.github.io/Chords-Station/Chords/Local_Train/Dilnawaaz.chords",
+            "chords_link": "https://hsaygan.github.io/Chords-Station/Chords/Local_Train/Dilnawaaz.chords",
             "youtube_link": "https://www.youtube.com/embed/-gKBXwXBUbk"
         },
         {
             "song": "Khudi",
-            "artist": "Local Train",
-            "link": "https://hsaygan.github.io/Chords-Station/Chords/Local_Train/Dilnawaaz.chords",
+            "chords_link": "https://hsaygan.github.io/Chords-Station/Chords/Local_Train/Dilnawaaz.chords",
             "youtube_link": "https://www.youtube.com/embed/9LjKAt6SkdQ"
         }
     ]
