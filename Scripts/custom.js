@@ -1,4 +1,10 @@
 var database_link = "https://hsaygan.github.io/Chords-Station/database.json";
+var timer = new Timer();
+var player;
+var done = false;
+var video_embed = "";
+
+//===================== Chord Sequence Functions
 
 function postUpdatedChord(timer, time_interval, chord)
 {
@@ -13,32 +19,33 @@ function getSongChords(database, file_object)
     console.log("\n=========== LEVEL 2");
 
     //Initializations
-    //document.getElementById('calendar').src = database[artist_name][i].youtube_link;
-    var timer = new Timer();
-    timer.start();
+    startVideo();
+    setTimeout(function() {
+        timer.start();
 
-    //Display Timer
-    timer.addEventListener('secondsUpdated', function (e) {
-        document.getElementById("timer").innerHTML = timer.getTimeValues().toString();
-    });
+        //Display Timer
+        timer.addEventListener('secondsUpdated', function (e) {
+            document.getElementById("timer").innerHTML = timer.getTimeValues().toString();
+        });
 
-    //Display Chords
-    var all_lines = file_object.toString().split("\n");
-    console.log("\nAll Lines: ",  all_lines);
-    for (var j = 0; j < all_lines.length-1; j++)
-    {
-        var current_line = all_lines[j].split(":");
-        console.log("\nCurrent Line: " + current_line);
-        var minutes = parseInt(current_line[0]);
-        var seconds = parseInt(current_line[1]);
-        var secondTenths = parseInt(current_line[2]);
-        var chord = current_line[3];
-        var time_interval = Math.abs(60*1000*(timer.getTimeValues().minutes-minutes)) + Math.abs(1000*(timer.getTimeValues().seconds-seconds)) + Math.abs(100*(timer.getTimeValues().secondTenths-secondTenths)) ;
-        console.log("\n\tTime Interval: ", time_interval);
-        console.log("\n\tChange Time: ", minutes, ":", seconds, ":", secondTenths, " to Chord: ", chord);
+        //Display Chords
+        var all_lines = file_object.toString().split("\n");
+        console.log("\nAll Lines: ",  all_lines);
+        for (var j = 0; j < all_lines.length-1; j++)
+        {
+            var current_line = all_lines[j].split(":");
+            console.log("\nCurrent Line: " + current_line);
+            var minutes = parseInt(current_line[0]);
+            var seconds = parseInt(current_line[1]);
+            var secondTenths = parseInt(current_line[2]);
+            var chord = current_line[3];
+            var time_interval = Math.abs(60*1000*(timer.getTimeValues().minutes-minutes)) + Math.abs(1000*(timer.getTimeValues().seconds-seconds)) + Math.abs(100*(timer.getTimeValues().secondTenths-secondTenths)) ;
+            console.log("\n\tTime Interval: ", time_interval);
+            console.log("\n\tChange Time: ", minutes, ":", seconds, ":", secondTenths, " to Chord: ", chord);
 
-        postUpdatedChord(timer, time_interval, chord);
-    }
+            postUpdatedChord(timer, time_interval, chord);
+        }
+    }, 2000);
 }
 
 function findSongChords(song_name, artist_name)
@@ -62,12 +69,16 @@ function findSongChords(song_name, artist_name)
                                 "\n\tLink: " + database[artist_name][i].chords_link +
                                 "\n\tYoutube Link: " + database[artist_name][i].youtube_link);
 
+                    video_embed = database[artist_name][i].youtube_link.toString();
+                    video_embed = video_embed.substring(video_embed.indexOf("embed")+6);
                     var xhr2 = new XMLHttpRequest();
                     xhr2.onreadystatechange = function()
                     {
                         if (this.readyState == 4 && this.status == 200)
                         {
                             var file_object = xhr2.responseText;
+
+                            console.log("\n\t\tVideo Embed: " + video_embed);
                             getSongChords(database, file_object);
                         }
                     };
@@ -85,4 +96,48 @@ function findSongChords(song_name, artist_name)
     xhr1.send();
 }
 
-findSongChords("Dil Mere", "Local Train")
+//===================== Video Embedding Functions
+
+function startVideo()
+{
+    document.getElementById("video_div").innerHTML = "<div id='player'></div>";
+    var tag = document.createElement('script');
+
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+}
+
+function onYouTubeIframeAPIReady()
+{
+    player = new YT.Player('player', {
+        height: '390',
+        width: '640',
+        videoId: video_embed,
+        events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+        }
+    });
+}
+
+function onPlayerReady(event)
+{
+    event.target.playVideo();
+}
+
+function onPlayerStateChange(event)
+{
+    if (event.data == YT.PlayerState.PLAYING && !done) {
+        //setTimeout(stopVideo, 6000);
+        done = true;
+    }
+}
+
+function stopVideo()
+{
+    player.stopVideo();
+    timer.start();
+}
+
+//===================== Debugging Area
