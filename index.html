@@ -3,19 +3,34 @@
     <head>
         <meta charset="utf-8">
         <title>Chords Convertor</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <script type="text/javascript" src="Scripts/easytimer.min.js"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gamja+Flower|Merriweather|Roboto+Slab">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="CSS/custom.css">
     </head>
     <body>
         <center>
             <h2 style="font-family: 'Gamja Flower', serif; color: grey; font-size: 6vh">Chords Station</h2>
-            <h3 style="font-family: 'Gamja Flower', serif; font-size: 3vh">Play the song as soon as the page loads (as soon as the Timer starts).</br>Following container will display the associated chord <br> in coordination to the time in the song.</h3>
-            <h2 id="timer" style="font-family: 'Merriweather', serif; font-size: 5vh">Time!</h2>
-            <div id="video_div"></div>
-            <h2 id="display_chord" style="font-family: 'Roboto Slab', serif; font-size: 7vh">Chords!</h2>
-                <i class="fa fa-play" onclick="findSongChords('Dil Mere', 'Local Train');" style="font-size: 5vh"></i>&emsp;&emsp;&emsp;
-                <i class="fa fa-stop" onclick="stopVideo()" style="font-size: 5vh"></i></br>
+            <div id="video_div"><div id='player' height="390"  width: "640"></div></div>
+            <i id="timer" style="color: black; "></i>
+            <div class="icon-bar">
+                <a class="active" href="#">
+                    <i class="fa fa-play" onclick="findSongChords('Dil Mere', 'Local Train');" style="font-size: 7vh"></i>
+                </a>
+                <a href="#">
+                    <h2 class = "inline" id="prev_chord" style="color: white; font-size: 5vh">-</h2>
+                    <i class = "inline fa fa-angle-right" style="color: grey"></i>
+                    <h2 class = "inline" id="chord" style="color: white; font-size: 5vh">-</h2>
+                    <i class = "inline fa fa-angle-right" style="color: grey"></i>
+                    <h2 class = "inline" id="next_chord" style="color: white; font-size: 5vh">-</h2>
+                </a>
+                <a class="active" href="#">
+                    <i class="fa fa-stop" onclick="stopVideo()" style="font-size: 7vh"></i>
+                </a>
+            </div>
         </center>
     </body>
     <script type="text/javascript" src="Scripts/custom.js"></script>

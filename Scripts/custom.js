@@ -6,12 +6,16 @@ var video_embed = "";
 
 //===================== Chord Sequence Functions
 
-function postUpdatedChord(timer, time_interval, chord)
+function postUpdatedChord(timer, time_interval, prev_chord, chord, next_chord)
 {
-    setTimeout(function() {
+    document.getElementById("prev_chord").innerHTML = prev_chord;
+    document.getElementById("next_chord").innerHTML = next_chord;
+    setTimeout(function()
+    {
         console.log("\t\tCurrent Time: ", timer.getTimeValues().minutes, ":", timer.getTimeValues().seconds, ":", timer.getTimeValues().secondTenths);
-        document.getElementById("display_chord").innerHTML = chord;
+        document.getElementById("chord").innerHTML = chord;
     }, time_interval);
+
 }
 
 function getSongChords(database, file_object)
@@ -31,6 +35,9 @@ function getSongChords(database, file_object)
         //Display Chords
         var all_lines = file_object.toString().split("\n");
         console.log("\nAll Lines: ",  all_lines);
+        var all_chords = [];
+        var prev_chord = "-";
+        var next_chord = "";
         for (var j = 0; j < all_lines.length-1; j++)
         {
             var current_line = all_lines[j].split(":");
@@ -39,11 +46,28 @@ function getSongChords(database, file_object)
             var seconds = parseInt(current_line[1]);
             var secondTenths = parseInt(current_line[2]);
             var chord = current_line[3];
+            all_chords.push(chord);
             var time_interval = Math.abs(60*1000*(timer.getTimeValues().minutes-minutes)) + Math.abs(1000*(timer.getTimeValues().seconds-seconds)) + Math.abs(100*(timer.getTimeValues().secondTenths-secondTenths)) ;
             console.log("\n\tTime Interval: ", time_interval);
             console.log("\n\tChange Time: ", minutes, ":", seconds, ":", secondTenths, " to Chord: ", chord);
 
-            postUpdatedChord(timer, time_interval, chord);
+            if (j==0)
+            {
+                prev_chord = "-";
+                next_chord = all_chords[j];
+            }
+            else if (j == all_lines.length-2)
+            {
+                prev_chord = all_chords[j-1];
+                next_chord = "-";
+            }
+            else
+            {
+                prev_chord = all_chords[j-1];
+                next_chord = all_chords[j];
+            }
+            postUpdatedChord(timer, time_interval, prev_chord, chord, next_chord);
+
         }
     }, 2000);
 }
@@ -128,8 +152,8 @@ function onPlayerReady(event)
 
 function onPlayerStateChange(event)
 {
-    if (event.data == YT.PlayerState.PLAYING && !done) {
-        //setTimeout(stopVideo, 6000);
+    if (event.data == YT.PlayerState.PLAYING && !done)
+    {
         done = true;
     }
 }
@@ -137,7 +161,7 @@ function onPlayerStateChange(event)
 function stopVideo()
 {
     player.stopVideo();
-    timer.start();
+    timer.stop();
 }
 
 //===================== Debugging Area
