@@ -1,0 +1,45 @@
+{
+  "name": "chords-station",
+  "version": "1.0.0",
+  "description": "Playing chords for all Youtube songs made easy.",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/realyashnag/Chords-Station.git"
+  },
+  "keywords": [
+    "chords",
+    "mean-stack",
+    "website",
+    "angular",
+    "guitar",
+    "youtube",
+    "made",
+    "easy"
+  ],
+  "author": "Yash Nag",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/realyashnag/Chords-Station/issues"
+  },
+  "homepage": "https://github.com/realyashnag/Chords-Station#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "fs": "0.0.1-security",
+    "fuse-js-latest": "^3.1.0",
+    "http": "0.0.0",
+    "moment": "^2.22.2",
+    "mongodb": "^3.1.1",
+    "mongoose": "^5.2.7",
+    "morgan": "^1.9.0",
+    "path": "^0.12.7",
+    "request": "^2.88.0",
+    "sys": "0.0.1",
+    "url": "^0.11.0"
+  }
+}
