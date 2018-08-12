@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="chordsStationApp">
     <head>
         <meta charset="utf-8">
-        <title>Chords Convertor</title>
+        <title>Chords Station</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <script type="text/javascript" src="Scripts/easytimer.min.js"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gamja+Flower|Merriweather|Roboto+Slab">
+        <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans:400,700'>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/custom.css">
     </head>
-    <body>
+    <body ng-controller="chordsStationController" ng-cloak>
         <center>
-            <h2 style="font-family: 'Gamja Flower', serif; color: grey; font-size: 6vh">Chords Station</h2>
-            <div id="video_div"><div id='player' height="390"  width: "640"></div></div>
+            <h2 class="title">Chords Station</h2>
+            <!-- <div id="video_div"><div id='player' height="390"  width: "640"></div></div>
             <i id="timer" style="color: black;"></i>
             <div class="icon-bar">
                 <a class="active" href="#">
@@ -30,8 +31,49 @@
                 <a class="active" href="#">
                     <i class="fa fa-stop" onclick="stopVideo()" style="font-size: 7vh"></i>
                 </a>
-            </div>
+            </div> -->
+            <md-content class="md-padding" layout="row" flex>
+                <md-card flex>
+                    <span class="md-headline" layout="row" layout-align="center">Add <strong>Artist</strong></span>
+                    <md-card-title>
+                        <md-card-title-media class="extraPaddingHorizontal">
+                            <span class="md-subhead">Artist Image: </span>
+                            <md-input-container>
+                                <input ng-model="thisArtist.displayImage">
+                            </md-input-container>
+                            <md-button class="md-raised" ng-click="checkImage(thisArtist.displayImage)">Verify Image</md-button>
+                            <div class="md-media-md card-media">
+                                <img ng-src="{{checkedImage}}">
+                            </div>
+                        </md-card-title-media>
+                        <md-card-title-text>
+                                <span class="md-subhead">Name: </span>
+                                <md-input-container>
+                                    <input ng-model="thisArtist.name">
+                                </md-input-container>
+                                <span class="md-subhead">Stage Name: </span>
+                                <md-input-container id="instDesc">
+                                    <input ng-model="thisArtist.stageName">
+                                </md-input-container>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-card-actions layout="row" layout-align="end center">
+                        <md-button class="md-raised" ng-click="addArtist(thisArtist)">Save</md-button>
+                    </md-card-actions>
+                </md-card>
+            </md-content>
         </center>
     </body>
-    <script type="text/javascript" src="js/custom.js"></script>
+
+    <!-- Angular, Material and jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-animate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.7.2/angular-sanitize.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-messages.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-scroll/1.0.2/angular-scroll.min.js.map"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script src="app.js"></script>
 </html>

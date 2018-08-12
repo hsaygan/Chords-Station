@@ -29,7 +29,6 @@ app.engine('html', require('ejs').renderFile);
 //===================================================================== Mongoose Actual Database Connection
 
 var url = 'mongodb://localhost:27017/chords_station';
-
 mongoose.connect(url, function (err, database) {
     if (err) {
         console.log('\nUnable to connect to the mongoDB server. Error:', err);
@@ -38,25 +37,13 @@ mongoose.connect(url, function (err, database) {
         console.log('\nConnection established to: ', url);
     }
 });
-
-
-// Mongoose
 var db = mongoose.connection;
 mongoose.Promise = global.Promise;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
+//====================================================================== Routes
 
-//====================================================================== Models
-
-//var eqad = require('./app/models/eqads');                      //EQAD Model File
-//var colleges = require('./app/models/colleges');                 //College Model File
-
-//====================================================================== Routers
-
-//var emails = require('./app/routes/emails.js', emails);          //Schools Route File
-
-
-//====================================================================== Use
-//app.use('/api/eqads',eqads);
+var chords = require('./app/routes/api/chords.js', chords);          //Schools Route File
+app.use('/api/chords',chords);
 
 var server = app.listen(port);
