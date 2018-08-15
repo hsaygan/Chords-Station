@@ -106,7 +106,6 @@
                 </md-content>
             </div>
 
-
             <!-- Add Albums -->
             <div ng-controller="albumController as ctrl">
                 <md-content class="md-padding" layout="row" flex>
@@ -198,6 +197,97 @@
                 </md-content>
             </div>
 
+
+            <!-- Add Songs -->
+            <div ng-controller="songController as ctrl">
+                <md-content class="md-padding" layout="row" flex>
+                    <md-card flex>
+                        <span class="md-headline" layout="row" layout-align="center">Add <strong>&nbsp;Song</strong></span>
+                        <md-card-title>
+                            <md-card-title-media class="extraPaddingHorizontal">
+                                <span class="md-subhead">Song Image: </span>
+                                <md-input-container md-no-float class="md-block">
+                                    <input ng-model="thisSong.songImage" placeholder="thelocaltrain.com/aaftaab.jpg">
+                                </md-input-container>
+                                <div class="md-media-md card-media">
+                                    <img ng-src="{{thisSong.songImage}}">
+                                </div>
+
+                                <span class="md-subhead">Selected Album: </span>
+                                <div> {{selectedFromSearchAlbum.title}} </div>
+
+                                <span class="md-subhead">Featured Artists Selected: </span>
+                                <div class="carousel"
+                                 data-flickity='{ "freeScroll": true, "cellAlign": "left", "contain": true }'>
+                                    <div class="carousel-cell" ng-repeat="item in selectedFtArtists">
+                                        {{item.stageName}}
+                                    </div>
+                                </div>
+                            </md-card-title-media>
+                            <md-card-title-text>
+                                <span class="md-subhead">Title: </span>
+                                <md-input-container md-no-float class="md-block">
+                                    <input ng-model="thisSong.title" placeholder="Dil Mere">
+                                </md-input-container>
+
+                                <span class="md-subhead">Youtube Link (Review before Saving): </span>
+                                <md-input-container md-no-float class="md-block">
+                                    <input ng-model="thisSong.youtubeLink" placeholder="https://www.youtube.com/watch?v=qLCLvzTGFVM">
+                                </md-input-container>
+                                <div> {{thisSong.youtubeLink}} </div>
+
+                                <span class="md-subhead">Genre</span>
+                                <md-input-container md-no-float class="md-block">
+                                    <input ng-model="thisSong.genre" placeholder="Alternative">
+                                </md-input-container>
+
+                                <span class="md-subhead">Album: </span>
+                                <md-autocomplete
+                                    md-selected-item="selectedFromSearchAlbum"
+                                    md-selected-item-change="thisSong.album = selectedFromSearchAlbum._id"
+                                    md-search-text-change="search('Albums', this, querySearchAlbum)"
+                                    md-search-text="querySearchAlbum"
+                                    md-items="item in this.allItems"
+                                    md-item-text="item.title"
+                                    md-min-length="3"
+                                    md-no-cache="false"
+                                    md-menu-class="autocomplete"
+                                    placeholder="Dilwale, Recovery ...">
+                                    <md-item-template>
+                                        <span md-highlight-text="querySearchAlbum" md-highlight-flags="^i">{{item.title}}</span>
+                                    </md-item-template>
+                                    <md-not-found>
+                                        No albums matching '"{{querySearchAlbum}}"' were found.
+                                    </md-not-found>
+                                </md-autocomplete>
+
+                                <span class="md-subhead">Featured Artists: </span>
+                                <md-autocomplete
+                                    md-selected-item="selectedFromSearchFtArtist"
+                                    md-selected-item-change="pushToArray(thisSong.featuredArtists, selectedFromSearchFtArtist, selectedFtArtists)"
+                                    md-search-text-change="search('Artist', this, querySearchFtArtist)"
+                                    md-search-text="querySearchFtArtist"
+                                    md-items="item in this.allItems"
+                                    md-item-text="item.stageName"
+                                    md-min-length="3"
+                                    md-no-cache="false"
+                                    md-menu-class="autocomplete"
+                                    placeholder="Lil Wayne, Arijit Singh ...">
+                                    <md-item-template>
+                                        <span md-highlight-text="querySearchFtArtist" md-highlight-flags="^i">{{item.stageName}}</span>
+                                    </md-item-template>
+                                    <md-not-found>
+                                        No artists matching '"{{querySearchFtArtist}}"' were found.
+                                    </md-not-found>
+                                </md-autocomplete>
+                            </md-card-title-text>
+                        </md-card-title>
+                        <md-card-actions layout="row" layout-align="end center">
+                            <md-button class="md-raised" ng-click="addSong(thisSong)">Save</md-button>
+                        </md-card-actions>
+                    </md-card>
+                </md-content>
+            </div>
         </center>
     </body>
 

@@ -8,6 +8,7 @@ var albumsSchema = mongoose.Schema({
     releaseDate: {type: Date},
     songs: [{type: Schema.ObjectId}],
     albumImage: {type: String},
+    _added: {type: Date, default: Date.now()},
     _approved: {type: Boolean, default: false}
 });
 

@@ -8,6 +8,7 @@ var artistSchema = mongoose.Schema({
     description: {type: String},
     born: {type: Date},
     albums: [{type: Schema.ObjectId}],
+    _added: {type: Date, default: Date.now()},
     _approved: {type: Boolean, default: false}
 });
 

@@ -44,10 +44,10 @@ chordsStationApp.controller('dataEntryController', function($scope, dataEntrySer
                 array.push(element._id);
                 display.push(element);
             } else {
-                console.log("Element already Exists.");
+                console.log("\tElement already Exists.");
             }
         } else {
-            console.log("Invalid Arguments!");
+            console.log("\tInvalid Arguments!");
         }
     }
     $scope.deleteFromArray = function(array, element, display){
@@ -74,9 +74,9 @@ chordsStationApp.controller('artistController', function($scope, dataEntryServic
         console.log(thisArtist);
         dataEntryService.addArtist(thisArtist).then(function(response){
             console.log(response);
-            Object.keys($scope.artistScope.thisArtist).forEach(function(thisProp){
+            Object.keys($scope.thisArtist).forEach(function(thisProp){
                 console.log("\t" + thisProp);
-                $scope.artistScope.thisArtist[thisProp] = "";
+                $scope.thisArtist[thisProp] = "";
             });
         });
     }
@@ -91,8 +91,23 @@ chordsStationApp.controller('albumController', function($scope, dataEntryService
         console.log(thisAlbum);
         dataEntryService.addAlbum(thisAlbum).then(function(response){
             console.log(response);
-            Object.keys($scope.albumScope.thisAlbum).forEach(function(thisProp){
-                $scope.albumScope.thisAlbum[thisProp] = "";
+            Object.keys($scope.thisAlbum).forEach(function(thisProp){
+                $scope.thisAlbum[thisProp] = "";
+            });
+        });
+    }
+});
+
+chordsStationApp.controller('songController', function($scope, dataEntryService){
+    $scope.thisSong = {
+        featuredArtists: []
+    };
+    $scope.selectedFtArtists = [];
+    $scope.addSong = function(thisSong){
+        dataEntryService.addSong(thisSong).then(function(response){
+            console.log(response);
+            Object.keys($scope.thisSong).forEach(function(thisProp){
+                $scope.thisSong[thisProp] = "";
             });
         });
     }
