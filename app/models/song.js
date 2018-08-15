@@ -6,8 +6,10 @@ var songsSchema = mongoose.Schema({
     artist: [{type: Schema.Types.ObjectId}],
     album: {type: Schema.Types.ObjectId},
     genre: {type: String},
+    songImage: {type: String},
     youtubeLink: {type: String, unique: true, required: true},
-    _added: {type: Date, default: Date.now()}
+    _added: {type: Date, default: Date.now()},
+    _approved: {type: Boolean, default: false}
 });
 
 module.exports = mongoose.model('songs', songsSchema);

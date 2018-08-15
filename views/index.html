@@ -10,9 +10,10 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gamja+Flower|Merriweather|Roboto+Slab">
         <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans:400,700'>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
         <link rel="stylesheet" href="css/custom.css">
     </head>
-    <body ng-controller="chordsStationController" ng-cloak>
+    <body ng-controller="dataEntryController" ng-cloak>
         <center>
             <h2 class="title">Chords Station</h2>
             <!-- <div id="video_div"><div id='player' height="390"  width: "640"></div></div>
@@ -32,36 +33,157 @@
                     <i class="fa fa-stop" onclick="stopVideo()" style="font-size: 7vh"></i>
                 </a>
             </div> -->
-            <md-content class="md-padding" layout="row" flex>
-                <md-card flex>
-                    <span class="md-headline" layout="row" layout-align="center">Add <strong>Artist</strong></span>
-                    <md-card-title>
-                        <md-card-title-media class="extraPaddingHorizontal">
-                            <span class="md-subhead">Artist Image: </span>
-                            <md-input-container>
-                                <input ng-model="thisArtist.displayImage">
-                            </md-input-container>
-                            <md-button class="md-raised" ng-click="checkImage(thisArtist.displayImage)">Verify Image</md-button>
-                            <div class="md-media-md card-media">
-                                <img ng-src="{{checkedImage}}">
-                            </div>
-                        </md-card-title-media>
-                        <md-card-title-text>
+
+            <!-- Add Artists -->
+            <div ng-controller="artistController as ctrl">
+                <md-content class="md-padding" layout="row" flex>
+                    <md-card flex>
+                        <span class="md-headline" layout="row" layout-align="center">Add <strong>&nbsp;Artist</strong></span>
+                        <md-card-title>
+                            <md-card-title-media class="extraPaddingHorizontal">
+                                <span class="md-subhead">Artist Image: </span>
+                                <md-input-container md-no-float class="md-block">
+                                    <input ng-model="thisArtist.displayImage" placeholder="google.com/kanyewest.jpg">
+                                </md-input-container>
+                                <div class="md-media-md card-media">
+                                    <img ng-src="{{thisArtist.displayImage}}">
+                                </div>
+
+                                <span class="md-subhead">Albums Selected: </span>
+                                <div class="carousel"
+                                 data-flickity='{ "freeScroll": true, "cellAlign": "left", "contain": true }'>
+                                    <div class="carousel-cell" ng-repeat="item in selectedAlbums">
+                                        {{item.title}}
+                                    </div>
+                                </div>
+                            </md-card-title-media>
+                            <md-card-title-text>
                                 <span class="md-subhead">Name: </span>
-                                <md-input-container>
-                                    <input ng-model="thisArtist.name">
+                                <md-input-container md-no-float class="md-block">
+                                    <input ng-model="thisArtist.name" placeholder="Dwayne Michael Carter Jr.">
                                 </md-input-container>
+
                                 <span class="md-subhead">Stage Name: </span>
-                                <md-input-container id="instDesc">
-                                    <input ng-model="thisArtist.stageName">
+                                <md-input-container md-no-float class="md-block">
+                                    <input ng-model="thisArtist.stageName" placeholder="Lil Wayne">
                                 </md-input-container>
-                        </md-card-title-text>
-                    </md-card-title>
-                    <md-card-actions layout="row" layout-align="end center">
-                        <md-button class="md-raised" ng-click="addArtist(thisArtist)">Save</md-button>
-                    </md-card-actions>
-                </md-card>
-            </md-content>
+
+                                <span class="md-subhead">Date of Birth: </span>
+                                <md-input-container md-no-float class="md-block">
+                                    <md-datepicker ng-model="thisArtist.born" md-current-view="year" md-placeholder="Enter Date"></md-datepicker>
+                                </md-input-container>
+
+                                <span class="md-subhead">Description: </span>
+                                <md-input-container md-no-float class="md-block">
+                                    <input ng-model="thisArtist.description">
+                                </md-input-container>
+
+                                <span class="md-subhead">Albums: </span>
+                                <md-autocomplete
+                                    md-selected-item="selectedFromSearchAlbum"
+                                    md-selected-item-change="pushToArray(thisArtist.albums, selectedFromSearchAlbum, selectedAlbums)"
+                                    md-search-text-change="search('Albums', this, querySearchAlbum)"
+                                    md-search-text="querySearchAlbum"
+                                    md-items="item in this.allItems"
+                                    md-item-text="item.title"
+                                    md-min-length="3"
+                                    md-no-cache="false"
+                                    md-menu-class="autocomplete"
+                                    placeholder="Hybrid Theory, Aalas Ke Pedh ...">
+
+                                    <md-item-template>
+                                        <span md-highlight-text="querySearchAlbum" md-highlight-flags="^i">{{item.title}}</span>
+                                    </md-item-template>
+                                    <md-not-found>
+                                        No albums matching '"{{querySearchAlbum}}"' were found.
+                                    </md-not-found>
+                                </md-autocomplete>
+                            </md-card-title-text>
+                        </md-card-title>
+                        <md-card-actions layout="row" layout-align="end center">
+                            <md-button class="md-raised" ng-click="addArtist(thisArtist)">Save</md-button>
+                        </md-card-actions>
+                    </md-card>
+                </md-content>
+            </div>
+
+
+            <!-- Add Albums -->
+            <div ng-controller="albumController as ctrl">
+                <md-content class="md-padding" layout="row" flex>
+                    <md-card flex>
+                        <span class="md-headline" layout="row" layout-align="center">Add <strong>&nbsp;Albums</strong></span>
+                        <md-card-title>
+                            <md-card-title-media class="extraPaddingHorizontal">
+                                <span class="md-subhead">Album Image: </span>
+                                <md-input-container md-no-float class="md-block">
+                                    <input ng-model="thisAlbum.albumImage" placeholder="google.com/kanyewest.jpg">
+                                </md-input-container>
+                                <div class="md-media-md card-media">
+                                    <img ng-src="{{thisAlbum.albumImage}}">
+                                </div>
+                            </md-card-title-media>
+                            <md-card-title-text>
+                                <span class="md-subhead">Title: </span>
+                                <md-input-container md-no-float class="md-block">
+                                    <input ng-model="thisAlbum.title" placeholder="The Madness of Many">
+                                </md-input-container>
+
+                                <span class="md-subhead">Artist: </span>
+                                <md-autocomplete
+                                    md-selected-item="selectedArtist"
+                                    md-selected-item-change="thisAlbum.artist = selectedArtist._id"
+                                    md-search-text-change="search('Artists', queryArtist)"
+                                    md-search-text="queryArtist"
+                                    md-items="item in allItems"
+                                    md-item-text="item.stageName"
+                                    md-min-length="3"
+                                    md-no-cache="false"
+                                    md-menu-class="autocomplete"
+                                    placeholder="Animals as Leaders">
+                                    <md-item-template>
+                                        <span md-highlight-text="queryArtist" md-highlight-flags="^i">{{item.stageName}}</span>
+                                    </md-item-template>
+                                    <md-not-found>
+                                        No Artists matching "{{queryArtist}}" were found.
+                                    </md-not-found>
+                                </md-autocomplete>
+
+                                <span class="md-subhead">Release Date: </span>
+                                <md-input-container md-no-float class="md-block">
+                                    <md-datepicker ng-model="thisAlbum.releaseDate" md-current-view="year" md-placeholder="Enter Date"></md-datepicker>
+                                </md-input-container>
+
+                                <span class="md-subhead">Description: </span>
+                                <md-input-container md-no-float class="md-block">
+                                    <input ng-model="thisAlbum.description">
+                                </md-input-container>
+
+                                <span class="md-subhead">Songs: </span>
+                                <md-autocomplete
+                                    md-selected-item="albumScope.selectedSong"
+                                    md-search-text-change="albumScope.querySong"
+                                    md-search-text="albumScope.querySong"
+                                    md-items="item in search('Songs', albumScope.querySong)"
+                                    md-item-text="item.title"
+                                    md-min-length="2"
+                                    placeholder="Ectogenesis, Cognitive Contortions ...">
+                                    <md-item-template>
+                                        <span md-highlight-text="albumScope.querySong" md-highlight-flags="^i">{{item.title}}</span>
+                                    </md-item-template>
+                                    <md-not-found>
+                                        No albums matching '"{{albumScope.querySong}}"' were found.
+                                    </md-not-found>
+                                </md-autocomplete>
+                            </md-card-title-text>
+                        </md-card-title>
+                        <md-card-actions layout="row" layout-align="end center">
+                            <md-button class="md-raised" ng-click="addAlbum(albumScope.thisAlbum)">Save</md-button>
+                        </md-card-actions>
+                    </md-card>
+                </md-content>
+            </div>
+
         </center>
     </body>
 
@@ -71,9 +193,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.7.2/angular-sanitize.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-aria.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-messages.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-scroll/1.0.2/angular-scroll.min.js.map"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
+    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
     <script src="app.js"></script>
 </html>

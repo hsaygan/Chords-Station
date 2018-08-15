@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html ng-app="chordsStationApp">
+    <head>
+        <meta charset="utf-8">
+        <title>Test</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gamja+Flower|Merriweather|Roboto+Slab">
+        <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans:400,700'>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+        <link rel="stylesheet" href="css/custom.css">
+    </head>
+    <body>
+        <!-- Add Artists -->
+        <md-content class="md-padding" layout="row" flex>
+            <md-card flex>
+                <span class="md-headline" layout="row" layout-align="center">Add <strong>&nbsp;Artist</strong></span>
+                <md-card-title>
+                    <md-card-title-media class="extraPaddingHorizontal">
+                        <span class="md-subhead">Artist Image: </span>
+                        <md-input-container>
+                            <input ng-model="artistScope.thisArtist.displayImage">
+                        </md-input-container>
+                        <md-button class="md-raised" ng-click="checkImage(artistScope.checkedImage, artistScope.thisArtist.displayImage)">Verify Image</md-button>
+                        <div class="md-media-md card-media">
+                            <img ng-src="{{artistScope.checkedImage}}">
+                        </div>
+                    </md-card-title-media>
+                    <md-card-title-text>
+                        <span class="md-subhead">Name: </span>
+                        <md-input-container>
+                            <input ng-model="artistScope.thisArtist.name" placeholder="Dwayne Michael Carter Jr.">
+                        </md-input-container>
+
+                        <span class="md-subhead">Stage Name: </span>
+                        <md-input-container>
+                            <input ng-model="artistScope.thisArtist.stageName" placeholder="Lil Wayne">
+                        </md-input-container>
+
+                        <span class="md-subhead">Date of Birth: </span>
+                        <md-input-container>
+                            <md-datepicker ng-model="artistScope.thisArtist.born" md-current-view="year" md-placeholder="Enter Date"></md-datepicker>
+                        </md-input-container>
+
+                        <span class="md-subhead">Description: </span>
+                        <md-input-container>
+                            <input ng-model="artistScope.thisArtist.description">
+                        </md-input-container>
+
+                        <span class="md-subhead">Albums: </span>
+                        <md-autocomplete
+                            md-selected-item="artistScope.selectedAlbum"
+                            md-search-text-change="artistScope.query"
+                            md-search-text="artistScope.query"
+                            md-items="item in search('Albums', artistScope.query)"
+                            md-item-text="item.title"
+                            md-min-length="3"
+                            placeholder="Hybrid Theory, Aalas Ke Pedh ...">
+                            <md-item-template>
+                                <span md-highlight-text="query" md-highlight-flags="^i">{{item.title}}</span>
+                            </md-item-template>
+                            <md-not-found>
+                                No albums matching '"{{artistScope.query}}"' were found.
+                            </md-not-found>
+                        </md-autocomplete>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button class="md-raised" ng-click="addArtist(artistScope.thisArtist)">Save</md-button>
+                </md-card-actions>
+            </md-card>
+        </md-content>
+
+        <h1>Flickity - freeScroll</h1>
+        <div class="carousel"
+         data-flickity='{ "freeScroll": true }'>
+            <div class="carousel-cell"></div>
+            <div class="carousel-cell"></div>
+            <div class="carousel-cell"></div>
+            <div class="carousel-cell"></div>
+            <div class="carousel-cell"></div>
+        </div>
+
+        <md-content class="md-padding" layout="row" flex>
+            <md-card flex>
+                <span class="md-headline" layout="row" layout-align="center">Add <strong>&nbsp;Albums</strong></span>
+                <md-card-title>
+                    <md-card-title-media class="extraPaddingHorizontal">
+                        <span class="md-subhead">Album Image: </span>
+                        <md-input-container>
+                            <input ng-model="albumScope.thisAlbum.albumImage">
+                        </md-input-container>
+                        <md-button class="md-raised" ng-click="checkImage(albumScope.checkedImage, albumScope.thisAlbum.albumImage)">Verify Image</md-button>
+                        <div class="md-media-md card-media">
+                            <img ng-src="{{albumScope.checkedImage}}">
+                        </div>
+                    </md-card-title-media>
+                    <md-card-title-text>
+                        <span class="md-subhead">Title: </span>
+                        <md-input-container>
+                            <input ng-model="albumScope.thisAlbum.title" placeholder="The Madness of Many">
+                        </md-input-container>
+
+                        <span class="md-subhead">Artist: </span>
+                        <!-- addProperty(albumScope.thisAlbum.artist, ) -->
+                        <md-autocomplete
+                            md-selected-item="albumScope.selectedArtist"
+                            md-selected-item-change="addProperty(albumScope.thisAlbum.artist, albumScope.selectedArtist)"
+                            md-search-text-change="search('Artists', albumScope.queryArtist)"
+                            md-search-text="albumScope.queryArtist"
+                            md-items="item in albumScope.artistsItem"
+                            md-item-text="item.stageName"
+                            md-min-length="3"
+                            md-no-cache="false"
+                            md-menu-class="autocomplete"
+                            placeholder="Animals as Leaders">
+                            <md-item-template>
+                                <span md-highlight-text="albumScope.queryArtist" md-highlight-flags="^i">{{item.stageName}}</span>
+                            </md-item-template>
+                            <md-not-found>
+                                No Artists matching "{{albumScope.queryArtist}}" were found.
+                            </md-not-found>
+                        </md-autocomplete>
+
+
+
+                        <span class="md-subhead">Release Date: </span>
+                        <md-input-container>
+                            <md-datepicker ng-model="albumScope.thisAlbum.releaseDate" md-current-view="year" md-placeholder="Enter Date"></md-datepicker>
+                        </md-input-container>
+
+                        <span class="md-subhead">Description: </span>
+                        <md-input-container>
+                            <input ng-model="albumScope.thisAlbum.description">
+                        </md-input-container>
+
+                        <span class="md-subhead">Songs: </span>
+                        <md-autocomplete
+                            md-selected-item="albumScope.selectedSong"
+                            md-search-text-change="albumScope.querySong"
+                            md-search-text="albumScope.querySong"
+                            md-items="item in search('Songs', albumScope.querySong)"
+                            md-item-text="item.title"
+                            md-min-length="2"
+                            placeholder="Ectogenesis, Cognitive Contortions ...">
+                            <md-item-template>
+                                <span md-highlight-text="albumScope.querySong" md-highlight-flags="^i">{{item.title}}</span>
+                            </md-item-template>
+                            <md-not-found>
+                                No albums matching '"{{albumScope.querySong}}"' were found.
+                            </md-not-found>
+                        </md-autocomplete>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button class="md-raised" ng-click="addAlbum(albumScope.thisAlbum)">Save</md-button>
+                </md-card-actions>
+            </md-card>
+        </md-content>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-animate.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.7.2/angular-sanitize.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-aria.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-messages.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-scroll/1.0.2/angular-scroll.min.js.map"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+    </body>
+</html>

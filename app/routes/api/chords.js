@@ -26,7 +26,7 @@ router.post('/addChords', function(req, res){
 });
 
 router.post('/addSong', function(req,res){
-    var thisSong = new song(req.body.thisSong);
+    var thisSong = new song(req.body);
     thisSong.save(function (err, newSong) {
         if (err) throw err;
         else {
@@ -37,7 +37,7 @@ router.post('/addSong', function(req,res){
 });
 
 router.post('/addAlbum', function(req,res){
-    var thisAlbum = new album(req.body.thisAlbum);
+    var thisAlbum = new album(req.body);
     thisAlbum.save(function (err, newAlbum) {
         if (err) throw err;
         else {
@@ -48,7 +48,6 @@ router.post('/addAlbum', function(req,res){
 });
 
 router.post('/addArtist', function(req,res){
-    console.log(req.body);
     var thisArtist = new artist(req.body);
     thisArtist.save(function (err, newArtist) {
         if (err) throw err;
@@ -57,6 +56,75 @@ router.post('/addArtist', function(req,res){
             res.json(newArtist);
         }
     });
+});
+
+//===========================================================
+
+router.get('/search', function(req, res){
+    var domain = req.query.domain;
+    var query = req.query.query;
+    if (domain.toLowerCase().indexOf('song') != -1) {
+        console.log("Searching for Songs | " + query);
+        song.find({'title': {'$regex': query , '$options': 'i'}}, function(err, matchedSongs){
+            if (err) throw err;
+            else {
+                if (matchedSongs){
+                    console.log("Found " + matchedSongs.length + " Songs");
+                    res.json(matchedSongs);
+                } else {
+                    console.log("No Match Found!");
+                    res.json(null);
+                }
+            }
+        });
+    } else if (domain.toLowerCase().indexOf('album') != -1) {
+        console.log("Searching for Albums | " + query);
+        album.find({
+                    '$or': [{
+                              'title': {'$regex': query , '$options': 'i'}
+                          }, {
+                              'description': {'$regex': query, '$options': 'i'}
+                          }]
+                   }, {
+                       title: 1,
+                       songs: 1,
+                       albumImage: 1
+                   }, function(err, matchedAlbums) {
+                       if (err) throw err;
+                       else {
+                           if (matchedAlbums){
+                               console.log("Found " + matchedAlbums.length + " Albums");
+                               res.json(matchedAlbums);
+                           } else {
+                               console.log("No Match Found!");
+                               res.json(null);
+                           }
+                       }
+        });
+    } else if (domain.toLowerCase().indexOf('artist') != -1) {
+        console.log("Searching for Artists | " + query);
+        artist.find({
+                    '$or': [{
+                              'name': {'$regex': query , '$options': 'i'}
+                          }, {
+                              'stageName': {'$regex': query, '$options': 'i'}
+                          }]
+                   }, function(err, matchedArtists){
+            if (err) throw err;
+            else {
+                if (matchedArtists){
+                    console.log("Found " + matchedArtists.length + " Artists");
+                    res.json(matchedArtists);
+                } else {
+                    console.log("No Match Found!");
+                    res.json(null);
+                }
+            }
+        });
+    } else {
+        console.log("Invalid Domain/Query");
+        res.json(null);
+    }
 });
 
 // router.post('/addNewChords', function(req, res) {
