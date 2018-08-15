@@ -83,6 +83,10 @@ chordsStationApp.controller('artistController', function($scope, dataEntryServic
 });
 
 chordsStationApp.controller('albumController', function($scope, dataEntryService){
+    $scope.thisAlbum = {
+        songs: []
+    };
+    $scope.selectedSongs = [];
     $scope.addAlbum = function(thisAlbum){
         console.log(thisAlbum);
         dataEntryService.addAlbum(thisAlbum).then(function(response){

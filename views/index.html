@@ -90,7 +90,6 @@
                                     md-no-cache="false"
                                     md-menu-class="autocomplete"
                                     placeholder="Hybrid Theory, Aalas Ke Pedh ...">
-
                                     <md-item-template>
                                         <span md-highlight-text="querySearchAlbum" md-highlight-flags="^i">{{item.title}}</span>
                                     </md-item-template>
@@ -122,6 +121,18 @@
                                 <div class="md-media-md card-media">
                                     <img ng-src="{{thisAlbum.albumImage}}">
                                 </div>
+
+                                <span class="md-subhead">Artist Selected: </span>
+                                <div>
+                                    {{selectedFromSearchArtist.name}}
+                                </div>
+                                <span class="md-subhead">Songs Selected: </span>
+                                <div class="carousel"
+                                 data-flickity='{ "freeScroll": true, "cellAlign": "left", "contain": true }'>
+                                    <div class="carousel-cell" ng-repeat="item in selectedSongs">
+                                        {{item.title}}
+                                    </div>
+                                </div>
                             </md-card-title-media>
                             <md-card-title-text>
                                 <span class="md-subhead">Title: </span>
@@ -131,21 +142,21 @@
 
                                 <span class="md-subhead">Artist: </span>
                                 <md-autocomplete
-                                    md-selected-item="selectedArtist"
-                                    md-selected-item-change="thisAlbum.artist = selectedArtist._id"
-                                    md-search-text-change="search('Artists', queryArtist)"
-                                    md-search-text="queryArtist"
-                                    md-items="item in allItems"
+                                    md-selected-item="selectedFromSearchArtist"
+                                    md-selected-item-change="thisAlbum.artist = selectedFromSearchArtist._id"
+                                    md-search-text-change="search('Artists', this, querySearchArtist)"
+                                    md-search-text="querySearchArtist"
+                                    md-items="item in this.allItems"
                                     md-item-text="item.stageName"
                                     md-min-length="3"
                                     md-no-cache="false"
                                     md-menu-class="autocomplete"
                                     placeholder="Animals as Leaders">
                                     <md-item-template>
-                                        <span md-highlight-text="queryArtist" md-highlight-flags="^i">{{item.stageName}}</span>
+                                        <span md-highlight-text="querySearchArtist" md-highlight-flags="^i">{{item.stageName}}</span>
                                     </md-item-template>
                                     <md-not-found>
-                                        No Artists matching "{{queryArtist}}" were found.
+                                        No Artists matching "{{querySearchArtist}}" were found.
                                     </md-not-found>
                                 </md-autocomplete>
 
@@ -159,26 +170,29 @@
                                     <input ng-model="thisAlbum.description">
                                 </md-input-container>
 
-                                <span class="md-subhead">Songs: </span>
+                                <span class="md-subhead">Contribution/Featured-In Songs: </span>
                                 <md-autocomplete
-                                    md-selected-item="albumScope.selectedSong"
-                                    md-search-text-change="albumScope.querySong"
-                                    md-search-text="albumScope.querySong"
-                                    md-items="item in search('Songs', albumScope.querySong)"
+                                    md-selected-item="selectedFromSearchSong"
+                                    md-selected-item-change="pushToArray(thisAlbum.songs, selectedFromSearchSong, selectedSongs)"
+                                    md-search-text-change="search('Songs', this, querySearchSong)"
+                                    md-search-text="querySearchSong"
+                                    md-items="item in this.allItems"
                                     md-item-text="item.title"
-                                    md-min-length="2"
+                                    md-min-length="3"
+                                    md-no-cache="false"
+                                    md-menu-class="autocomplete"
                                     placeholder="Ectogenesis, Cognitive Contortions ...">
                                     <md-item-template>
-                                        <span md-highlight-text="albumScope.querySong" md-highlight-flags="^i">{{item.title}}</span>
+                                        <span md-highlight-text="querySearchSong" md-highlight-flags="^i">{{item.title}}</span>
                                     </md-item-template>
                                     <md-not-found>
-                                        No albums matching '"{{albumScope.querySong}}"' were found.
+                                        No albums matching '"{{querySearchSong}}"' were found.
                                     </md-not-found>
                                 </md-autocomplete>
                             </md-card-title-text>
                         </md-card-title>
                         <md-card-actions layout="row" layout-align="end center">
-                            <md-button class="md-raised" ng-click="addAlbum(albumScope.thisAlbum)">Save</md-button>
+                            <md-button class="md-raised" ng-click="addAlbum(thisAlbum)">Save</md-button>
                         </md-card-actions>
                     </md-card>
                 </md-content>
