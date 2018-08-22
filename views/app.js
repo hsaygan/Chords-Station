@@ -1,4 +1,4 @@
-var chordsStationApp = angular.module("chordsStationApp", ['ngMaterial']);
+var chordsStationApp = angular.module("chordsStationApp", ['ngMaterial', 'ngYoutubeEmbed', 'ngTable']);
 
 chordsStationApp.config(function($mdThemingProvider){
     $mdThemingProvider.theme('docs-dark')
@@ -20,6 +20,12 @@ chordsStationApp.service('dataEntryService', function($http){
         return $http.post('/api/chords/addAlbum', obj);
     };
 
+    this.search = function (domain, query){
+        return $http.get('/api/chords/search?domain=' + domain + "&query=" + query);
+    }
+});
+
+chordsStationApp.service('chordsService', function($http){
     this.search = function (domain, query){
         return $http.get('/api/chords/search?domain=' + domain + "&query=" + query);
     }
@@ -71,12 +77,12 @@ chordsStationApp.controller('artistController', function($scope, dataEntryServic
     };
     $scope.selectedAlbums = [];
     $scope.addArtist = function(thisArtist){
-        console.log(thisArtist);
         dataEntryService.addArtist(thisArtist).then(function(response){
             console.log(response);
             Object.keys($scope.thisArtist).forEach(function(thisProp){
-                console.log("\t" + thisProp);
-                $scope.thisArtist[thisProp] = "";
+                if (typeof $scope.thisArtist[thisProp] == 'string'){
+                    $scope.thisArtist[thisProp] = "";
+                }
             });
         });
     }
@@ -92,7 +98,9 @@ chordsStationApp.controller('albumController', function($scope, dataEntryService
         dataEntryService.addAlbum(thisAlbum).then(function(response){
             console.log(response);
             Object.keys($scope.thisAlbum).forEach(function(thisProp){
-                $scope.thisAlbum[thisProp] = "";
+                if (typeof $scope.thisAlbum[thisProp] == 'string'){
+                    $scope.thisAlbum[thisProp] = "";
+                }
             });
         });
     }
@@ -107,8 +115,36 @@ chordsStationApp.controller('songController', function($scope, dataEntryService)
         dataEntryService.addSong(thisSong).then(function(response){
             console.log(response);
             Object.keys($scope.thisSong).forEach(function(thisProp){
-                $scope.thisSong[thisProp] = "";
+                if (typeof $scope.thisSong[thisProp] == 'string'){
+                    $scope.thisSong[thisProp] = "";
+                }
             });
         });
     }
 });
+
+chordsStationApp.controller('chordsController', ['$scope', 'ngYoutubeEmbedService', 'chordsService', function($scope, ngYoutubeEmbedService, chordsService) {
+    $scope.videoURL = 'https://www.youtube.com/watch?v=Ff4pwweqGi8';
+    $scope.search = function (query){
+        $scope.allReturnedItems = [];
+        chordsService.search('song', query).then(function(returnedSongs){
+            if (returnedSongs){
+                $scope.allReturnedItems = $scope.allReturnedItems.concat(returnedSongs.data)
+            }
+            chordsService.search('album', query).then(function(returnedAlbums){
+                if (returnedAlbums){
+                    $scope.allReturnedItems = $scope.allReturnedItems.concat(returnedAlbums.data);
+                }
+                chordsService.search('artist', query).then(function(returnedArtists){
+                    if (returnedArtists){
+                        $scope.allReturnedItems = $scope.allReturnedItems.concat(returnedArtists.data);
+                    }
+                    console.log($scope.allReturnedItems);
+                });
+            });
+        });
+    }
+    $scope.getDetails = function(thisItem){
+        console.log("Congratulations! You've selected " + thisItem.title + " Item!");
+    }
+}]);

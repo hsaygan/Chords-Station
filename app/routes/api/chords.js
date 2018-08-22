@@ -76,7 +76,7 @@ router.get('/search', function(req, res){
                     res.json(null);
                 }
             }
-        });
+        }).limit(5);
     } else if (domain.toLowerCase().indexOf('album') != -1) {
         console.log("Searching for Albums | " + query);
         album.find({
@@ -100,7 +100,7 @@ router.get('/search', function(req, res){
                                res.json(null);
                            }
                        }
-        });
+        }).limit(5);
     } else if (domain.toLowerCase().indexOf('artist') != -1) {
         console.log("Searching for Artists | " + query);
         artist.find({
@@ -120,7 +120,7 @@ router.get('/search', function(req, res){
                     res.json(null);
                 }
             }
-        });
+        }).limit(5);
     } else {
         console.log("Invalid Domain/Query");
         res.json(null);
