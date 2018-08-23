@@ -2,7 +2,7 @@
 <html ng-app="chordsStationApp">
     <head>
         <meta charset="utf-8">
-        <title>Add Chords</title>
+        <title>Find Chords</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -32,19 +32,19 @@
                 <i class="fa fa-stop" onclick="stopVideo()" style="font-size: 7vh"></i>
             </a>
         </div> -->
-        <span class="md-headline"><strong>Search the Song</strong></span>
+        <span class="md-headline"><strong>Search Chords</strong></span>
         <md-autocomplete
             md-selected-item="selectedItem"
             md-selected-item-change="getDetails(selectedItem)"
             md-search-text-change="search(query)"
             md-search-text="query"
             md-items="item in allReturnedItems"
-            md-item-text="item._id"
+            md-item-text="item.name"
             md-min-length="2"
             md-menu-class="autocomplete"
             placeholder="Choo Lo, Arijit Singh, Meteora ...">
             <md-item-template>
-                <span md-highlight-text="query" md-highlight-flags="^i">{{item._id}}</span>
+                <span md-highlight-text="query" md-highlight-flags="^i">{{item.name}}</span>
             </md-item-template>
             <md-not-found>
                 No items matching "'{{query}}'" were found.
@@ -52,19 +52,44 @@
         </md-autocomplete>
 
         <div ng-repeat="item in allReturnedItems">
-            {{item._id}}
+            {{item.name}}
         </div>
 
+        <!-- List of All Songs of the Selected Album/Artist -->
+        <div class="songsList" ng-repeat="song in allReturnedSongs">
+            <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch>
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-display-1">{{song.title}}</span>
+                        <span class="md-subhead">by {{song.artist}}</span><br>
+                        <span class="md-subhead">Genre: <strong>{{song.genre}}</strong></span>
+                        <span class="md-subhead">Album: <strong>{{song.album}}</strong></span>
+                        <span class="md-subhead">Release Date: <strong>{{song.releaseDate}}</strong></span>
+                    </md-card-title-text>
+                    <md-card-title-media>
+                        <div class="md-media-md card-media">
+                            <img src="{{song.songImage}}" flex>
+                        </div>
+                    </md-card-title-media>
+                </md-card-title>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button class="md-raised" ng-click="checkoutChords(song)">Checkout Chords</md-button>
+                </md-card-actions>
+            </md-card>
+        </div>
 
-        <span class="md-subhead">Enter URL: </span>
-        <md-input-container md-no-float class="md-block">
-            <input ng-model="songUrl" placeholder="https://www.youtube.com/watch?v=ai0htHlsqZo {{videoURL}}">
-            <md-button class="md-raised" ng-click="getSongVideo(songUrl)">Check Out!</md-button>
-        </md-input-container>
+        <!-- List of Chords for Selected Song -->
+        <!-- <table ng-table="tableParams" class="table" show-filter="true">
+            <tr ng-repeat="chord in $data">
+                <td title="'Image'" filter="{ name: 'text'}" sortable="'name'">{{chord.title}}</td>
+                <td title="'Title'" filter="{ name: 'text'}" sortable="'title'">{{chord.title}}</td>
+                <td title="'Album'" filter="{ name: 'text'}" sortable="'album'">{{chord.album}}</td>
+                <td title="'Artist'" filter="{ name: 'text'}" sortable="'artist'">{{chord.artist}}</td>
+                <td title="'Genre'" filter="{ age: 'number'}" sortable="'genre'">{{chord.genre}}</td>
+            </tr>
+        </table> -->
 
-        {{videoURL}}
-        <ng-youtube-embed video='videoURL' width="100%"></ng-youtube-embed>
-        <label class="text-center">Update video URL / Id (watch scope changes)</label>
+        <ng-youtube-embed video='videoURL' width="80%"></ng-youtube-embed>
 
         <!-- Scripts -->
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.js"></script>

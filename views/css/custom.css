@@ -1,5 +1,9 @@
 body {margin:0;}
 
+.songsList {
+    width: 60%;
+}
+
 .title {
     font-family: 'Gamja Flower', serif;
     color: grey;

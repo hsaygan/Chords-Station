@@ -127,6 +127,27 @@ router.get('/search', function(req, res){
     }
 });
 
+router.get('/getSongDetails', function(req, res){
+    var songId = req.query.id;
+    // Get Song Details (Artist, Album, ReleaseDate from Album)
+});
+
+router.get('/getSongsByArtist', function(req, res){
+    var artistId = req.query.id;
+    // Get All Songs by this Artist
+});
+
+router.get('/getSongsByAlbum', function(req, res){
+    var albumId = req.query.id;
+    // Get All Songs in this Album
+});
+
+router.get('/checkoutChords', function(req, res){
+    var songId = req.query.id;
+    // Get All Songs in this Album
+});
+
+
 // router.post('/addNewChords', function(req, res) {
 //     rssarticles.find({}, {title:1, link:1}, function(err, allArticles) {
 //         if (err) throw err;

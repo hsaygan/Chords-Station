@@ -29,6 +29,18 @@ chordsStationApp.service('chordsService', function($http){
     this.search = function (domain, query){
         return $http.get('/api/chords/search?domain=' + domain + "&query=" + query);
     }
+    this.getSongDetails = function(songId){
+        return $http.get('/api/chords/getSongDetails?id=', songId);
+    }
+    this.getSongsByArtist = function(artistId){
+        return $http.get('/api/chords/getSongsByArtist?id=', artistId);
+    }
+    this.getSongsByAlbum = function(albumId){
+        return $http.get('/api/chords/getSongsByAlbum?id=', albumId);
+    }
+    this.checkoutChords = function(songId){
+        return $http.get('/api/chords/checkoutChords?id=', songId);
+    }
 });
 
 chordsStationApp.controller('dataEntryController', function($scope, dataEntryService){
@@ -123,8 +135,23 @@ chordsStationApp.controller('songController', function($scope, dataEntryService)
     }
 });
 
-chordsStationApp.controller('chordsController', ['$scope', 'ngYoutubeEmbedService', 'chordsService', function($scope, ngYoutubeEmbedService, chordsService) {
-    $scope.videoURL = 'https://www.youtube.com/watch?v=Ff4pwweqGi8';
+chordsStationApp.controller('chordsController', ['$scope', 'ngYoutubeEmbedService', 'NgTableParams', 'chordsService', function($scope, ngYoutubeEmbedService, NgTableParams, chordsService) {
+    function testing(){
+        $scope.videoURL = 'https://www.youtube.com/watch?v=Ff4pwweqGi8';
+
+        $scope.allReturnedSongs = [{
+                title: "Aaftaab",
+                artist: "The Local Train",
+                album: "Vaaqif",
+                genre: "Soft, Alternative",
+                songImage: 'https://a10.gaanacdn.com/images/albums/37/2055837/crop_175x175_2055837.jpg',
+                youtubeLink: "https://www.youtube.com/watch?v=U77d9912lrw",
+                releaseDate: "July 14th, 2015"
+            }
+        ];
+    }
+    testing();
+
     $scope.search = function (query){
         $scope.allReturnedItems = [];
         chordsService.search('song', query).then(function(returnedSongs){
@@ -144,7 +171,56 @@ chordsStationApp.controller('chordsController', ['$scope', 'ngYoutubeEmbedServic
             });
         });
     }
+
     $scope.getDetails = function(thisItem){
+        $scope.allReturnedSongs = [];
+        if (thisItem == 'song'){                                                    //Not Actual Condition
+            chordsService.getSongDetails(thisItem._id).then(function(thisSong){
+                if (thisSong){
+                    thisSong = thisSong.data;
+                    thisSong.releaseDate = moment(thisSong.releaseDate);
+                    $scope.allReturnedSongs.push(thisSong);
+                }
+            });
+        } else if (thisItem == 'album'){                                             //Not Actual Condition
+            chordsService.getSongsByAlbum(thisItem._id).then(function(theseSongs){
+                if (theseSongs){
+                    theseSongs = theseSongs.data;
+                    theseSongs.forEach(function(thisSong){
+                        thisSong = thisSong.data;
+                        thisSong.releaseDate = moment(thisSong.releaseDate);
+                        $scope.allReturnedSongs.push(thisSong);
+                    });
+                }
+            });
+        } else if (thisItem == 'artist'){                                            //Not Actual Condition
+            chordsService.getSongsByArtist(thisItem._id).then(function(theseSongs){
+                if (theseSongs){
+                    theseSongs = theseSongs.data;
+                    theseSongs.forEach(function(thisSong){
+                        thisSong = thisSong.data;
+                        thisSong.releaseDate = moment(thisSong.releaseDate);
+                        $scope.allReturnedSongs.push(thisSong);
+                    });
+                }
+            });
+        }
         console.log("Congratulations! You've selected " + thisItem.title + " Item!");
+    }
+
+    $scope.checkoutChords = function(thisSong){
+        chordsService.checkoutChords(thisSong._id).then(function(theseChords){
+            if (theseChords){
+                theseChords = theseChords.data;
+                $scope.thisSongChords = new NgTableParams({}, {
+                    dataset: theseChords
+                })
+            }
+        });
+    }
+
+    $scope.viewChords = function(thisChord){
+        // Initialize Player
+        // Start Chords Display Interface
     }
 }]);
