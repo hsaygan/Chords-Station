@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-
 var albumsSchema = mongoose.Schema({
     title: {type: String, required: true},
     artist: {type: Schema.Types.ObjectId},

@@ -32,28 +32,32 @@
                 <i class="fa fa-stop" onclick="stopVideo()" style="font-size: 7vh"></i>
             </a>
         </div> -->
+
         <span class="md-headline"><strong>Search Chords</strong></span>
         <md-autocomplete
             md-selected-item="selectedItem"
             md-selected-item-change="getDetails(selectedItem)"
             md-search-text-change="search(query)"
             md-search-text="query"
-            md-items="item in allReturnedItems"
-            md-item-text="item.name"
+            md-items="item in allSearchReturnedItems"
+            md-item-text="item.stageName"
             md-min-length="2"
-            md-menu-class="autocomplete"
             placeholder="Choo Lo, Arijit Singh, Meteora ...">
             <md-item-template>
-                <span md-highlight-text="query" md-highlight-flags="^i">{{item.name}}</span>
+                <div ng-if="item.stageName">
+                    <span md-highlight-text="query" md-highlight-flags="^i">{{item.stageName}}</span>
+                </div>
+                <div ng-if="item.title">
+                    <span md-highlight-text="query" md-highlight-flags="^i">{{item.title}}</span>
+                </div>
+                <div ng-if="!item.title && !item.stageName">
+                    <span md-highlight-text="query" md-highlight-flags="^i">Element Id: {{item._id}}</span>
+                </div>
             </md-item-template>
             <md-not-found>
                 No items matching "'{{query}}'" were found.
             </md-not-found>
         </md-autocomplete>
-
-        <div ng-repeat="item in allReturnedItems">
-            {{item.name}}
-        </div>
 
         <!-- List of All Songs of the Selected Album/Artist -->
         <div class="songsList" ng-repeat="song in allReturnedSongs">
