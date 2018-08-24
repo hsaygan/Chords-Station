@@ -1,10 +1,34 @@
-var chordsStationApp = angular.module("chordsStationApp", ['ngMaterial', 'ngYoutubeEmbed', 'ngTable']);
+var chordsStationApp = angular.module("chordsStationApp", ['ngRoute', 'ngMaterial', 'ngYoutubeEmbed', 'ngTable']);
 
 chordsStationApp.config(function($mdThemingProvider){
     $mdThemingProvider.theme('docs-dark')
     .dark()
     .primaryPalette('light-blue')
     .accentPalette('blue');
+});
+
+chordsStationApp.config(function($routeProvider){
+    $routeProvider
+        .when('/', {
+            templateUrl : 'html/welcome.html',
+            controller  : 'mainController'
+        })
+        .when('/DataEntry', {
+            templateUrl : 'html/dataEntry.html',
+            controller  : 'dataEntryController'
+        })
+        .when('/Chords', {
+            templateUrl : 'html/chords.html',
+            controller  : 'chordsController'
+        });
+        // .when('/ViewChords', {
+        //     templateUrl : 'html/viewChords.html',
+        //     controller  : 'mainController'
+        // })
+});
+
+chordsStationApp.controller('mainController', function($scope){
+    $scope.message = "Hi, Welcome to this Site!";
 });
 
 chordsStationApp.service('dataEntryService', function($http){

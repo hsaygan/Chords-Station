@@ -1,0 +1,81 @@
+<center>
+    <!-- Make Chords -->
+    <!-- <div id="video_div"><div id='player' height="390"  width: "640"></div></div>
+    <i id="timer" style="color: black;"></i>
+    <div class="icon-bar">
+        <a class="active" href="#">
+            <i class="fa fa-play" onclick="findSongChords('Dil Mere', 'Local Train');" style="font-size: 7vh"></i>
+        </a>
+        <a href="#">
+            <h2 class = "inline" id="prev_chord" style="color: white; font-size: 5vh">-</h2>
+            <i class = "inline fa fa-angle-right" style="color: grey"></i>
+            <h2 class = "inline" id="chord" style="color: white; font-size: 5vh">-</h2>
+            <i class = "inline fa fa-angle-right" style="color: grey"></i>
+            <h2 class = "inline" id="next_chord" style="color: white; font-size: 5vh">-</h2>
+        </a>
+        <a class="active" href="#">
+            <i class="fa fa-stop" onclick="stopVideo()" style="font-size: 7vh"></i>
+        </a>
+    </div> -->
+    <span class="md-headline"><strong>Search Chords</strong></span>
+    <md-autocomplete
+        md-selected-item="selectedItem"
+        md-selected-item-change="getDetails(selectedItem)"
+        md-search-text-change="search(query)"
+        md-search-text="query"
+        md-items="item in allSearchReturnedItems"
+        md-item-text="item.stageName"
+        md-min-length="2"
+        placeholder="Choo Lo, Arijit Singh, Meteora ...">
+        <md-item-template>
+            <div ng-if="item.stageName">
+                <span md-highlight-text="query" md-highlight-flags="^i">{{item.stageName}}</span>
+            </div>
+            <div ng-if="item.title">
+                <span md-highlight-text="query" md-highlight-flags="^i">{{item.title}}</span>
+            </div>
+            <div ng-if="!item.title && !item.stageName">
+                <span md-highlight-text="query" md-highlight-flags="^i">Element Id: {{item._id}}</span>
+            </div>
+        </md-item-template>
+        <md-not-found>
+            No items matching "'{{query}}'" were found.
+        </md-not-found>
+    </md-autocomplete>
+
+    <!-- List of All Songs of the Selected Album/Artist -->
+    <div class="songsList" ng-repeat="song in allReturnedSongs">
+        <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-display-1">{{song.title}}</span>
+                    <span class="md-subhead">by {{song.artist}}</span><br>
+                    <span class="md-subhead">Genre: <strong>{{song.genre}}</strong></span>
+                    <span class="md-subhead">Album: <strong>{{song.album}}</strong></span>
+                    <span class="md-subhead">Release Date: <strong>{{song.releaseDate}}</strong></span>
+                </md-card-title-text>
+                <md-card-title-media>
+                    <div class="md-media-md card-media">
+                        <img src="{{song.songImage}}" flex>
+                    </div>
+                </md-card-title-media>
+            </md-card-title>
+            <md-card-actions layout="row" layout-align="end center">
+                <md-button class="md-raised" ng-click="checkoutChords(song)">Checkout Chords</md-button>
+            </md-card-actions>
+        </md-card>
+    </div>
+
+    <!-- List of Chords for Selected Song -->
+    <!-- <table ng-table="tableParams" class="table" show-filter="true">
+        <tr ng-repeat="chord in $data">
+            <td title="'Image'" filter="{ name: 'text'}" sortable="'name'">{{chord.title}}</td>
+            <td title="'Title'" filter="{ name: 'text'}" sortable="'title'">{{chord.title}}</td>
+            <td title="'Album'" filter="{ name: 'text'}" sortable="'album'">{{chord.album}}</td>
+            <td title="'Artist'" filter="{ name: 'text'}" sortable="'artist'">{{chord.artist}}</td>
+            <td title="'Genre'" filter="{ age: 'number'}" sortable="'genre'">{{chord.genre}}</td>
+        </tr>
+    </table> -->
+
+    <ng-youtube-embed video='videoURL' width="80%"></ng-youtube-embed>
+</center>

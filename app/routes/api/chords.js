@@ -30,9 +30,15 @@ router.post('/addSong', function(req,res){
     thisSong.save(function (err, newSong) {
         if (err) throw err;
         else {
-            album.update({_id: newSong.album}, {'$push': {songs: newSong._id}})
-            console.log(newSong);
-            res.json(newSong);
+            album.update({_id: newSong.album}, {'$push': {songs: newSong._id}}, function(err, result){
+                if (err) {
+                    console.log("Error Updating the Album's Songs.");
+                    throw err;
+                } else {
+                    console.log(result);
+                    res.json(newSong);
+                }
+            })
         }
     });
 });
