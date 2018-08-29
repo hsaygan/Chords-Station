@@ -3,9 +3,21 @@
 
     <!-- Add Artists -->
     <div ng-controller="artistController as ctrl">
-        <md-content class="md-padding" layout="row" flex>
-            <md-card flex>
-                <span class="md-headline" layout="row" layout-align="center">Add <strong>&nbsp;Artist</strong></span>
+        <md-card flex>
+            <span class="md-headline" layout="row" layout-align="center">Add <strong>&nbsp;Artist</strong></span>
+
+            <!-- Check if Individual or Group -->
+            <div ng-hide="thisArtist.isGroup == false || thisArtist.isGroup == true" layout="row" flex>
+                <div layout="column" flex>
+                    <md-button class="md-raised" ng-click="thisArtist.isGroup = false">Individual</md-button>
+                </div>
+                <div layout="column" flex>
+                    <md-button class="md-raised" ng-click="thisArtist.isGroup = true">Group</md-button>
+                </div>
+            </div>
+
+            <!-- Individual Artist Form -->
+            <div ng-show="thisArtist.isGroup == false">
                 <md-card-title>
                     <md-card-title-media class="extraPaddingHorizontal">
                         <span class="md-subhead">Artist Image: </span>
@@ -69,14 +81,80 @@
                 <md-card-actions layout="row" layout-align="end center">
                     <md-button class="md-raised" ng-click="addArtist(thisArtist)">Save</md-button>
                 </md-card-actions>
-            </md-card>
-        </md-content>
+            </div>
+
+            <!-- Group Artist Form -->
+            <div ng-show="thisArtist.isGroup == true">
+                <md-card-title>
+                    <md-card-title-media class="extraPaddingHorizontal">
+                        <span class="md-subhead">Group Image: </span>
+                        <md-input-container md-no-float class="md-block">
+                            <input ng-model="thisArtist.displayImage" placeholder="google.com/kanyewest.jpg">
+                        </md-input-container>
+                        <div class="md-media-md card-media">
+                            <img ng-src="{{thisArtist.displayImage}}">
+                        </div>
+
+                        <span class="md-subhead">Albums Selected: </span>
+                        <div class="carousel"
+                         data-flickity='{ "freeScroll": true, "cellAlign": "left", "contain": true }'>
+                            <div class="carousel-cell" ng-repeat="item in selectedAlbums">
+                                {{item.title}}
+                            </div>
+                        </div>
+                    </md-card-title-media>
+                    <md-card-title-text>
+                        <span class="md-subhead">Group Name: </span>
+                        <md-input-container md-no-float class="md-block">
+                            <input ng-model="thisArtist.stageName" placeholder="The Local Train">
+                        </md-input-container>
+
+                        <span class="md-subhead">Members: </span>
+                        <md-button class="md-raised" ng-click="addGroupMember(this)"> + </md-button>
+                        <div id"newGroupMembers"><div>
+
+                        <span class="md-subhead">Group Formation: </span>
+                        <md-input-container md-no-float class="md-block">
+                            <md-datepicker ng-model="thisArtist.formationDate" md-current-view="year" md-placeholder="Enter Date"></md-datepicker>
+                        </md-input-container>
+
+                        <span class="md-subhead">Description: </span>
+                        <md-input-container md-no-float class="md-block">
+                            <input ng-model="thisArtist.description">
+                        </md-input-container>
+
+                        <span class="md-subhead">Albums: </span>
+                        <md-autocomplete
+                            md-selected-item="selectedFromSearchAlbum"
+                            md-selected-item-change="pushToArray(thisArtist.albums, selectedFromSearchAlbum, selectedAlbums)"
+                            md-search-text-change="search('Albums', this, querySearchAlbum)"
+                            md-search-text="querySearchAlbum"
+                            md-items="item in this.allItems"
+                            md-item-text="item.title"
+                            md-min-length="3"
+                            md-no-cache="false"
+                            md-menu-class="autocomplete"
+                            placeholder="Aalas Ke Pedh, Vaaqif ...">
+                            <md-item-template>
+                                <span md-highlight-text="querySearchAlbum" md-highlight-flags="^i">{{item.title}}</span>
+                            </md-item-template>
+                            <md-not-found>
+                                No albums matching '"{{querySearchAlbum}}"' were found.
+                            </md-not-found>
+                        </md-autocomplete>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button class="md-raised" ng-click="addArtist(thisArtist)">Save</md-button>
+                </md-card-actions>
+            </div>
+        </md-card>
     </div>
 
     <!-- Add Albums -->
     <div ng-controller="albumController as ctrl">
-        <md-content class="md-padding" layout="row" flex>
-            <md-card flex>
+        <md-content class="md-padding" layout="row">
+            <md-card>
                 <span class="md-headline" layout="row" layout-align="center">Add <strong>&nbsp;Albums</strong></span>
                 <md-card-title>
                     <md-card-title-media class="extraPaddingHorizontal">
@@ -166,8 +244,8 @@
 
     <!-- Add Songs -->
     <div ng-controller="songController as ctrl">
-        <md-content class="md-padding" layout="row" flex>
-            <md-card flex>
+        <md-content class="md-padding" layout="row" >
+            <md-card >
                 <span class="md-headline" layout="row" layout-align="center">Add <strong>&nbsp;Song</strong></span>
                 <md-card-title>
                     <md-card-title-media class="extraPaddingHorizontal">

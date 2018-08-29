@@ -2,14 +2,25 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var artistSchema = mongoose.Schema({
-    name: {type: String, required: true},
-    stageName: {type: String},
+    stageName: {type: String, required: true},
     displayImage: {type: String},
     description: {type: String},
-    born: {type: Date},
     albums: [{type: Schema.ObjectId}],
-    // isGroup: {type: Boolean},
-    // groupMembers: [{type: Schema.Types.Mixed}],
+
+    // if Individual
+    name: {type: String},
+    born: {type: Date},
+
+    // if Group
+    isGroup: {type: Boolean},
+    formationDate: {type: Date},
+    groupMembers: [{
+        name: {type: String},
+        type: {type: String},
+        reference: {type: Schema.ObjectId}
+    }],
+
+    // Internal
     _added: {type: Date, default: Date.now()},
     _approved: {type: Boolean, default: false}
 });

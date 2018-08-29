@@ -20,15 +20,15 @@ chordsStationApp.config(function($routeProvider){
         .when('/Chords', {
             templateUrl : 'html/chords.html',
             controller  : 'chordsController'
+        })
+        .when('/PlayChords', {
+            templateUrl : 'html/playChords.html',
+            controller  : 'playChordsController'
         });
-        // .when('/ViewChords', {
-        //     templateUrl : 'html/viewChords.html',
-        //     controller  : 'mainController'
-        // })
 });
 
 chordsStationApp.controller('mainController', function($scope){
-    $scope.message = "Hi, Welcome to this Site!";
+
 });
 
 chordsStationApp.service('dataEntryService', function($http){
@@ -67,7 +67,7 @@ chordsStationApp.service('chordsService', function($http){
     }
 });
 
-chordsStationApp.controller('dataEntryController', function($scope, dataEntryService){
+chordsStationApp.controller('dataEntryController', function($scope, $compile, dataEntryService){
     $scope.search = function(domain, scope, query){
         if (domain && query){
             console.log(domain + " | " + query);
@@ -104,6 +104,11 @@ chordsStationApp.controller('dataEntryController', function($scope, dataEntrySer
         } else {
             console.log("Invalid Arguments!");
         }
+    }
+    $scope.groupMembers = [{}];
+    $scope.addGroupMember = function(scope){
+        console.log("Added a new Member | ", $scope.groupMembers);
+        // Incomplete
     }
 });
 
@@ -269,4 +274,8 @@ chordsStationApp.controller('chordsController', ['$scope', 'ngYoutubeEmbedServic
         // Initialize Player
         // Start Chords Display Interface
     }
+}]);
+
+chordsStationApp.controller('playChordsController', ['$scope', 'ngYoutubeEmbedService', function($scope, ngYoutubeEmbedService){
+    $scope.video1 = 'https://www.youtube.com/watch?v=E813VYySueM';
 }]);

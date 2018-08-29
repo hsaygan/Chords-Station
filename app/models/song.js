@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var songsSchema = mongoose.Schema({
     title: {type:  String},
     album: {type: Schema.Types.ObjectId},
-    featuredArtists: [{tupe: Schema.Types.ObjectId}],
+    featuredArtists: [{type: Schema.Types.ObjectId}],
     genre: {type: String},
     songImage: {type: String},
     youtubeLink: {type: String, unique: true, required: true},
