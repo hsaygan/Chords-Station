@@ -62,11 +62,13 @@ for this_class in class_labels:
 
         # Concatenate all features from all Training Source Data Files, then Finally Train Model
         if (index+1 == len(this_class_training_samples)):
-            gmm = GMM(n_components = 16, covariance_type='diag',n_init = 3) #, n_iter = 200
+            gmm = GMM (n_components = 16, covariance_type='diag',n_init = 3) #, n_iter = 200
+            gmm.n_iter = 20
             gmm.fit(features)
             picklefile = this_class + ".gmm"
             pickle.dump(gmm, open(os.path.join(models_path, picklefile),'wb'))           # Dumping Trained Model into Pickle
-            print ("\n\tClass Label: ", picklefile.split('.')[0], " | Data Point = ", features.shape)
+            print ("\n\tClass Label: ", picklefile.split('.')[0], " | Features Shape = ", features.shape)
             features = np.asarray(())
+
 
 print ("\nTraining Complete!")

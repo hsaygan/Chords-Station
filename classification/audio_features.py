@@ -38,7 +38,6 @@ def extract_features(audio,rate):
     delta to make it 40 dim feature vector"""
 
     mfcc_feat = mfcc.mfcc(audio, rate, 0.025, 0.01,20,appendEnergy = True)
-
     mfcc_feat = preprocessing.scale(mfcc_feat)
     delta = calculate_delta(mfcc_feat)
     combined = np.hstack((mfcc_feat,delta))

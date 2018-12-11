@@ -86,5 +86,5 @@ if (int(input()) == 1):
         print ("Classified: ", models[chosen_class]['label'])           # As corresponding indices to Models are the same
 
 print ("\n======================\nResults: \n", results)
-results.to_csv('Results.csv', sep=',')
+results.to_csv('results.csv', sep=',')
 print ("\nTesting Complete!")
